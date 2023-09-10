@@ -9,6 +9,8 @@ export class Gallery extends Component {
     page: 1,
     images: [],
     isEmpty: false,
+    isLoadMore: false,
+    isError: '',
   };
 
   componentDidUpdate(_, prevState) {
@@ -23,11 +25,20 @@ export class Gallery extends Component {
           }
           this.setState(prevState => ({
             images: [...prevState.images, ...photos],
+            isLoadMore: page < Math.ceil(total_results / 15),
           }));
         })
-        .catch();
+        .catch(error => {
+          this.setState({ isError: error.message });
+        });
     }
   }
+
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
 
   onSubmit = value => {
     this.setState({
@@ -38,7 +49,7 @@ export class Gallery extends Component {
     });
   };
   render() {
-    const { images, isEmpty } = this.state;
+    const { images, isEmpty, isLoadMore, isError } = this.state;
     return (
       <>
         <SearchForm onSubmit={this.onSubmit} />
@@ -51,9 +62,11 @@ export class Gallery extends Component {
             </GridItem>
           ))}
         </Grid>
+        {isLoadMore && <Button onClick={this.handleLoadMore}>Load More</Button>}
         {isEmpty && (
           <Text textAlign="center">Sorry. There are no images ... 😭</Text>
         )}
+        {isError && <Text textAlign="center">Sorry. {isError} ... 😭</Text>}
       </>
     );
   }
