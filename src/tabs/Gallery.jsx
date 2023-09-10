@@ -91,7 +91,7 @@ export class Gallery extends Component {
           <Text textAlign="center">Sorry. There are no images ... 😭</Text>
         )}
         {isLoading && <Loader />}
-        <CustomModal modalIsOpen={modalIsOpen} src={src} alt={alt} closeModal={this.openModal}  />
+        {modalIsOpen && <CustomModal modalIsOpen={modalIsOpen} src={src} alt={alt} closeModal={this.openModal}  />}
         {isError && <Text textAlign="center">Sorry. {isError} ... 😭</Text>}
       </>
     );

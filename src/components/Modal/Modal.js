@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#modal');
@@ -14,6 +15,14 @@ const customStyles = {
 };
 
 export const CustomModal = ({ modalIsOpen, src, alt, closeModal }) => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   return (
     <Modal
       isOpen={modalIsOpen}
